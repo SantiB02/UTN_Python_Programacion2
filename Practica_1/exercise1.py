@@ -75,4 +75,4 @@ else:
     print("El número no es divisible por 7")
 # COMPLETAR - FIN
 
-assert es_divisible_por_siete
+assert es_divisible_por_siete == 0
