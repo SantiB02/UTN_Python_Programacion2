@@ -12,6 +12,14 @@ riego_activado = True
 if esta_lloviendo or riego_activado:
     piso_mojado = True;
     
+# COMPLETAR - INICIO
+piso_mojado = esta_lloviendo or riego_activado
+if piso_mojado:
+    print("El piso está mojado")
+else:
+    print("El piso está seco")
+# COMPLETAR - FIN
+
 assert piso_mojado
 
 
