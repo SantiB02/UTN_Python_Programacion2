@@ -25,13 +25,13 @@ Restricción: Usar directamente los strings y la concatenación automática (no
 usar operadores).
 """
 
-# "¡Mamá "
-# "estoy concatenando "
-# "strings!"
+variable_001 = "¡Mamá "
+variable_002 = "estoy concatenando "
+variable_003 = "strings!"
 
 # COMPLETAR - INICIO
 
-strings_concatenados = "¡Mamá " "estoy concatenando " "strings!"
+strings_concatenados = "{}{}{}".format(variable_001, variable_002, variable_003)
 
 # COMPLETAR - FIN
 
