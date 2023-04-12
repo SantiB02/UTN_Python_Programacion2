@@ -79,7 +79,7 @@ numero_04 = 654
 
 entero_01 = int(numero_01)
 entero_02 = int(numero_02,16)
-entero_03 = int(numero_03,16)
+entero_03 = int(numero_03,8)
 entero_04 = int(numero_04)
 
 resultado_resta = entero_01 - entero_02 - entero_03 - entero_04

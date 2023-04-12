@@ -71,7 +71,7 @@ variable_05 = "Ezequiel"
 
 # COMPLETAR - INICIO
 
-strings_concatenados = " {} {}{}{} . Se llama {}.".format(variable_01, str(variable_02), variable_03, variable_04, variable_05)
+strings_concatenados = " {} 6 {}{}{} . Se llama {}.".format(variable_01, str(variable_02), variable_03, variable_04, variable_05)
 
 # COMPLETAR - FIN
 
