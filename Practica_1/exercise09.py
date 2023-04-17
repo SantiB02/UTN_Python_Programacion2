@@ -14,9 +14,9 @@ numero_3 = 3
 
 conjunto_1 = set()
 
-conjunto.add(numero_1)
-conjunto.add(numero_2)
-conjunto.add(numero_3)
+conjunto_1.add(numero_1)
+conjunto_1.add(numero_2)
+conjunto_1.add(numero_3)
 
 # COMPLETAR - FIN
 
@@ -37,9 +37,9 @@ edad = "35"
 
 conjunto_2 = {5, 6, 7}
 
-conjunto.add(nombre)
-conjunto.add(domicilio)
-conjunto.add(edad)
+conjunto_2.add(nombre)
+conjunto_2.add(domicilio)
+conjunto_2.add(edad)
 
 # COMPLETAR - FIN
 
