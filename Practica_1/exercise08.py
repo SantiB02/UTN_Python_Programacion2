@@ -11,7 +11,7 @@ Definir un diccionario para un 'Cliente' que contenga los siguiente valores:
 
 # COMPLETAR - INICIO
 
-cliente = {
+Cliente = {
     "Nombre": "Mario Pedernera",
     "DNI": 56895632,
     "Domicilio": "Los alamos 4509",
@@ -37,7 +37,7 @@ Definir un diccionario para las 'Compras' que contenga los siguiente valores:
 
 # COMPLETAR - INICIO
 
-compras = {
+Compras = {
     "Mario Pedernera": ["cafetera", "TV 50 pulgadas", "mouse gamer"],
     "Ezequiel Castello": ["ipad", "ipod", "iphone"],
     "Pablo Piristrelli": ["Reproductor de CD", "Videograbadora"]
@@ -46,7 +46,7 @@ compras = {
 # COMPLETAR - FIN
 
 assert (
-    (Compras["Mario Pedernera"] == ["cafetera", "TV 50 pulgads", "mouse gamer"])
+    (Compras["Mario Pedernera"] == ["cafetera", "TV 50 pulgadas", "mouse gamer"])
     and (Compras["Ezequiel Castello"] == ["ipad", "ipod", "iphone"])
     and (Compras["Pablo Piristrelli"] == ["Reproductor de CD", "Videograbadora"])
 )
@@ -108,7 +108,7 @@ diccionario_3 = {
 
 # COMPLETAR - INICIO
 
-lista_de_claves = list(diccionario_3.keys())
+keys = list(diccionario_3.keys())
 
 # COMPLETAR - FIN
 
@@ -128,7 +128,7 @@ diccionario_4 = {
 
 # COMPLETAR - INICIO
 
-lista_de_valores = list(diccionario_4.values())
+values = list(diccionario_4.values())
 
 # COMPLETAR - FIN
 
@@ -149,7 +149,7 @@ diccionario_5 = {
 
 # COMPLETAR - INICIO
 
-lista_de_items = list(diccionario_5.items())
+items = list(diccionario_5.items())
 
 # COMPLETAR - FIN
 
