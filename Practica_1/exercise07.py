@@ -8,9 +8,7 @@ y en el mismo orden.
 
 lista = ["casa", "perro", "pato", "gato"]
 
-# COMPLETAR - INICIO
-
-# COMPLETAR - FIN
+tupla = tuple(lista)
 
 assert tupla == ("casa", "perro", "pato", "gato")
 
@@ -22,9 +20,7 @@ y en el mismo orden.
 
 tupla = "casa", "perro", "pato", "gato", "tenedor"
 
-# COMPLETAR - INICIO
-
-# COMPLETAR - FIN
+lista = list(tupla)
 
 assert lista == ["casa", "perro", "pato", "gato", "tenedor"]
 
@@ -35,9 +31,9 @@ Desempaquetar la siguiente tupla en las variables a, b y c
 
 tupla = ("primer", 25, [1, 2, 3])
 
-# COMPLETAR - INICIO
-
-# COMPLETAR - FIN
+a = tupla[0]
+b = tupla[1]
+c = list(tupla)
 
 assert a == "primer" and b == 25 and c == [1, 2, 3]
 
@@ -48,9 +44,7 @@ Desempaquetar la siguiente tupla y luego sumar sus valores
 
 tupla = (87, 98, 35, 67, 4, 9)
 
-# COMPLETAR - INICIO
-
-# COMPLETAR - FIN
+total = sum(tupla)
 
 assert total == 300
 
