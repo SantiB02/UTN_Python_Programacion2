@@ -35,6 +35,8 @@ Domicilio = "Alsina 2446" or "Pueyrredón y la vía"
 
 # COMPLETAR - INICIO
 
+variable_03 = bool(domicilio)
+
 # COMPLETAR - FIN
 
 assert variable_03 is True
