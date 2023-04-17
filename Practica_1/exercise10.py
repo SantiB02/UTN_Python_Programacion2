@@ -8,7 +8,7 @@ Interpretar como booleano la siguente variable y guardar el valor resultante en 
 A = 5
 
 # COMPLETAR - INICIO
-
+variable_01 = bool(A)
 # COMPLETAR - FIN
 
 assert variable_01 is True
@@ -21,7 +21,7 @@ Interpretar como booleano la siguente variable y guardar el valor resultante en 
 Domicilio = ""
 
 # COMPLETAR - INICIO
-
+variable_02 = bool(Domicilio)
 # COMPLETAR - FIN
 
 assert variable_02 is False
@@ -35,7 +35,7 @@ Domicilio = "Alsina 2446" or "Pueyrredón y la vía"
 
 # COMPLETAR - INICIO
 
-variable_03 = bool(domicilio)
+variable_03 = bool(Domicilio)
 
 # COMPLETAR - FIN
 
