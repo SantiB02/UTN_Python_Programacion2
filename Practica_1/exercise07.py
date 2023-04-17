@@ -31,12 +31,9 @@ Desempaquetar la siguiente tupla en las variables a, b y c
 
 tupla = ("primer", 25, [1, 2, 3])
 
-a = tupla[0]
-b = tupla[1]
-c = list(tupla)
+a, b, c = tupla
 
 assert a == "primer" and b == 25 and c == [1, 2, 3]
-
 
 """
 Desempaquetar la siguiente tupla y luego sumar sus valores
@@ -56,9 +53,7 @@ Restricción: Utilizar f-Strings.
 
 lista = ["esta", "mañana", "sali", "a", "correr"]
 
-# COMPLETAR - INICIO
-
-# COMPLETAR - FIN
+string_concatenado = f"{lista[0]} {lista[1]} {lista[2]} {lista[3]} {lista[4]}"
 
 assert string_concatenado == "esta mañana sali a correr"
 
