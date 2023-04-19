@@ -4,5 +4,10 @@
 
 #INICIO
 
+numero_1 = input("Ingrese el primer número: ")
+numero_2 = input("Ingrese el segundo número: ")
+numero_max = max(numero_1, numero_2)
+##numero_max = numero_1 if numero_1 > numero_2 else numero_2
+print("El número mayor es ", numero_max)
 
 #FIN
