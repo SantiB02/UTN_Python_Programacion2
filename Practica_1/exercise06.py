@@ -123,9 +123,9 @@ Restricción: Utilizar el método extend junto al indexado múltiple
 lista = ["ho", "la", 81, 6, 42, "como", "estas?"]
 
 # COMPLETAR - INICIO
-lista_primero_y_ultimo=[]
-lista_primero_y_ultimo.extend(lista[:2])
-lista_primero_y_ultimo.extend(lista[5:])
+lista_primeros_y_ultimos=[]
+lista_primeros_y_ultimos.extend(lista[:2])
+lista_primeros_y_ultimos.extend(lista[5:])
 
 # COMPLETAR - FIN
 

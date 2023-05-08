@@ -24,7 +24,7 @@ def combinar_basico(nombres: List[str], precios: List[float]) -> Tuple[Any]:
     """
     lista_nueva=[]
     for i in range(len(nombre_articulos)):
-        lista_nueva.append((nombre_articulos[i],precio_articulos[i]))
+        lista_nueva.append((nombres[i],precios[i]))
     return tuple(lista_nueva)
 
         
@@ -56,7 +56,7 @@ def combinar_enumerate(nombres: List[str], precios: List[float], ids: List[int])
 
     Referencia: https://docs.python.org/3/library/functions.html#enumerate
     """
-
+    
 
 # NO MODIFICAR - INICIO
 respuesta = (

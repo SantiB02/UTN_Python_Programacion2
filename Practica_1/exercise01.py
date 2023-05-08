@@ -68,11 +68,12 @@ Restricción: Usar el operador módulo.
 numero_incalculable = 2 ** 54 - 1
 
 # COMPLETAR - INICIO
-es_divisible_por_siete = numero_incalculable % 7
-if es_divisible_por_siete == 0:
+if numero_incalculable % 7 == 0:
     print("El número es divisible por 7")
+    es_divisible_por_siete = True
 else:
     print("El número no es divisible por 7")
+    es_divisible_por_siete = False
 # COMPLETAR - FIN
 
 assert es_divisible_por_siete

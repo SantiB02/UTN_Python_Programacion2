@@ -59,7 +59,7 @@ def maximo_arbitrario(*args) -> float:
     Referencia: https://docs.python.org/3/tutorial/controlflow.html#arbitrary-argument-lists # noqa: E501
     """
     return max(*args)
-print(maximo_arbitrario(1,2,33,4,5,3,8))
+print(maximo_arbitrario(1,2,33,4,5,3,8)) #print de prueba para comprobar que funciona
 
 # NO MODIFICAR - INICIO
 assert maximo_arbitrario(1, 10, 5, -5) == 10

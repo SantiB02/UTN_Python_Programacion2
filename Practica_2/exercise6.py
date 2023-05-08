@@ -36,7 +36,6 @@ def numeros_al_final_comprension(lista: List[Union[float, str]]) -> List[Union[f
         - Utilizar dos comprensiones de listas.
     """
 
-
 # NO MODIFICAR - INICIO
 assert numeros_al_final_comprension([3, "a", 1, "b", 10, "j"]) == ["a", "b", "j", 3, 1, 10]  # noqa: E501
 # NO MODIFICAR - FIN

@@ -10,7 +10,7 @@ esta_lloviendo = True
 riego_activado = True
 
 if esta_lloviendo or riego_activado:
-    piso_mojado = True;
+    piso_mojado = True
     
 assert piso_mojado
 
@@ -24,7 +24,7 @@ Restricción: Usar NOT.
 lado_cuadrado = 5
 area_cuadrado = pow(lado_cuadrado, 2)
 area_mayor_a_cinco = True
-area_mayor_a_cinco = not (lado_cuadrado < 5 or area_cuadrado < 0 )
+area_mayor_a_cinco = not lado_cuadrado < 5
 
 
 assert area_mayor_a_cinco
@@ -40,7 +40,7 @@ numero_2 = 50
 resultado = False
 
 if numero_1 % 7 == 0 and numero_2 % 7 != 0:
-    resultado = True;
+    resultado = True
 
 assert resultado
 

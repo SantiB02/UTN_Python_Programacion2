@@ -20,7 +20,6 @@ def operacion_basica(a: float, b: float, multiplicar: bool) -> Union[float, str]
         resultado = "Operación no válida"
     else:
         resultado = a / b
-
     return resultado
     
 

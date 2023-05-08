@@ -50,7 +50,11 @@ def multiplicar_basico(numeros: Iterable[float]) -> float:
         - Utilizar múltiples Return
         - No utilizar ELSE
     """
-
+    if numeros == []: return 0
+    acum = 1
+    for numero in numeros:
+        acum *= numero
+    return acum
 
 # NO MODIFICAR - INICIO
 assert multiplicar_basico([1, 2, 3, 4]) == 24
