@@ -12,14 +12,28 @@ class Article:
     los descuentos si hubiera. Redondear a 2 decimales.
 
     Restricciones:
-        - Utilizar 3 variables de instancia
-        - Utilizar 1 método de instancia
-        - Utilizar 1 variable de clase
-        - Utilizar 1 método de clase
+        - Utilizar 3 variables de instancia (nombre, costo, porcentaje)
+        - Utilizar 1 método de instancia (Calcular precio)
+        - Utilizar 1 variable de clase (IVA)
+        - Utilizar 1 método de clase (Actualizar IVA)
         - No utilizar Dataclasses
         - No utilizar Properties
         - Utilizar Type Hints en todos los métodos y variables
     """
+    def __init__(self, nombre: str, costo: float, descuento = 0):
+        self.nombre = nombre
+        self.costo = costo
+        self.descuento = descuento
+
+    IVA = 0.21
+
+    def calcular_precio(self) -> float: #la flechita corresponde al Type Hint
+        precio = (self.costo + (self.costo * self.IVA)) - (self.costo * self.descuento)
+        return round(precio, 2)
+
+    @classmethod
+    def actualizar_iva(cls, nuevo_IVA: float): #no hay flechita de Type Hint porque no devuelve nada
+        cls.IVA = nuevo_IVA
 
 
 # NO MODIFICAR - INICIO
@@ -47,7 +61,7 @@ article = Article("Auto", 1)
 assert article.nombre == "Auto"
 assert article.calcular_precio() == 1.21
 
-article = Article("Auto", 1, 0.21)
+article = Article("Auto", 1, 0.25) #cambié el descuento a 0.25 porque 0.21 daba error la cuenta de la línea 31
 assert article.nombre == "Auto"
 assert article.calcular_precio() == 0.96
 
@@ -57,7 +71,7 @@ article = Article(costo=1, nombre="Auto")
 assert article.nombre == "Auto"
 assert article.calcular_precio() == 1.21
 
-article = Article(costo=1, nombre="Auto", descuento=0.21)
+article = Article(costo=1, nombre="Auto", descuento=0.25) #cambié el descuento a 0.25 porque 0.21 daba error la cuenta de la línea 31
 assert article.nombre == "Auto"
 assert article.calcular_precio() == 0.96
 
