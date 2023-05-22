@@ -22,7 +22,16 @@ Restricciones:
     - No utilizar properties
     - Utilizar Type Hints en todos los métodos y variables
 """
+@dataclass #decorador que funciona como atajo para instanciar una clase (por ej: evita el uso de __init__ inicializando las variables directamente)
+class Carrera:
+    materias: List[str]
 
+    def __len__(self): #método mágico (están entre guiones bajos) para saber la longitud de una instancia de la clase
+        return len(self.materias)
+
+@dataclass
+class Materia:
+    nombre: str
 
 # NO MODIFICAR - INICIO
 # Test parámetro obligatorio
