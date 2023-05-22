@@ -26,7 +26,7 @@ Restricciones:
 class Carrera:
     materias: List[str]
 
-    def __len__(self): #método mágico (están entre guiones bajos) para saber la longitud de una instancia de la clase
+    def __len__(self) -> int: #método mágico (están entre guiones bajos) para saber la longitud de una instancia de la clase
         return len(self.materias)
 
 @dataclass

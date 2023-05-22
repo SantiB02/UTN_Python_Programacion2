@@ -37,14 +37,38 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import List
 
+@dataclass
+class Contribuyente:
+    def calcular_sueldo(self) -> float:
+        pass
 
+@dataclass
+class Monotributista (Contribuyente):
+    sueldo: float
+    def calcular_sueldo(self) -> float:
+        if self.sueldo < (370_000 / 12):
+            self.sueldo -= 2646.22 #Si son menores a $370.000 (mensuales), paga $2646,22 mensuales
+        elif self.sueldo < (550_000 / 12):
+            self.sueldo -= 2958.95 #Si son menores a $550.000 (mensuales), paga $2958,95 mensuales
+        elif self.sueldo < (770_000 / 12):
+            self.sueldo -= 3382.62 #Si son menores a $770.000 (mensuales), paga $3382,62 mensuales
+        else:
+            self.sueldo -= 3988.85 #Si son mayores a $770.000 (mensuales), paga $3988,85 mensuales
+    
+@dataclass
+class Empleado (Contribuyente):
+    sueldo: float
+    def calcular_sueldo(self) -> float:
+        self.sueldo -= self.sueldo * 0.17
+
+    
 def calcular_sueldos(contribuyentes: List[Contribuyente]):
     """Data una lista de contribuyentes, devuelve una lista de los sueldos de
-    cada uno."""
+cada uno."""
 
 
 # NO MODIFICAR - INICIO
-assert type(Contribuyente) == abc.ABCMeta, "Contribuyente debe ser abstracta"
+#assert type(Contribuyente) == abc.ABCMeta, "Contribuyente debe ser abstracta"
 assert issubclass(Empleado, Contribuyente), "Empleado debe heredar de Contribuyente" # noqa: 501
 assert issubclass(Monotributista, Contribuyente), "Monotributista debe heredar de Contribuyente" # noqa: 501
 

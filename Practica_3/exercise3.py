@@ -21,9 +21,14 @@ class Article:
         self.nombre = nombre
         self.costo = costo
         self.descuento = descuento
-        self.precio = (self.costo + (self.costo * self.IVA)) - (self.costo * self.descuento) #En vez de método de instancia, es una propiedad del objeto (una nueva variable "precio")
+        self.precio = (self.costo + (self.costo * self.IVA)) - (self.costo * self.descuento)
         round(self.precio, 2)
+        
 
+    @property #En vez de método de instancia, es una propiedad del objeto (una nueva variable "precio")
+    def precio(self) -> float:
+        return self.precio     
+        
     @classmethod #método de clase
     def actualizar_iva(cls, nuevo_IVA: float): #no hay flechita de Type Hint porque no devuelve nada
         cls.IVA = nuevo_IVA
