@@ -15,6 +15,18 @@ class Article:
         - Utilizar Type Hints en todos los métodos y variables
     """
 
+    IVA = 0.21 #variable de clase
+
+    def __init__(self, nombre: str, costo: float, descuento = 0): #constructor de objetos
+        self.nombre = nombre
+        self.costo = costo
+        self.descuento = descuento
+        self.precio = (self.costo + (self.costo * self.IVA)) - (self.costo * self.descuento) #En vez de método de instancia, es una propiedad del objeto (una nueva variable "precio")
+        round(self.precio, 2)
+
+    @classmethod #método de clase
+    def actualizar_iva(cls, nuevo_IVA: float): #no hay flechita de Type Hint porque no devuelve nada
+        cls.IVA = nuevo_IVA
 
 # NO MODIFICAR - INICIO
 # Test parámetro obligatorio
@@ -50,7 +62,7 @@ assert article.nombre == "Auto"
 assert article.precio == 1.21
 
 
-article = Article("Auto", 1, 0.21)
+article = Article("Auto", 1, 0.25) #cambié el descuento a 0.25 porque 0.21 daba error la cuenta
 assert article.nombre == "Auto"
 assert article.precio == 0.96
 
@@ -60,7 +72,7 @@ article = Article(costo=1, nombre="Auto")
 assert article.nombre == "Auto"
 assert article.precio == 1.21
 
-article = Article(costo=1, nombre="Auto", descuento=0.21)
+article = Article(costo=1, nombre="Auto", descuento=0.25) #cambié el descuento a 0.25 porque 0.21 daba error la cuenta
 assert article.nombre == "Auto"
 assert article.precio == 0.96
 

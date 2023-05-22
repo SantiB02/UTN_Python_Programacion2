@@ -20,18 +20,18 @@ class Article:
         - No utilizar Properties
         - Utilizar Type Hints en todos los métodos y variables
     """
-    def __init__(self, nombre: str, costo: float, descuento = 0):
+    def __init__(self, nombre: str, costo: float, descuento = 0): #constructor de objetos
         self.nombre = nombre
         self.costo = costo
         self.descuento = descuento
 
-    IVA = 0.21
+    IVA = 0.21 #variable de clase
 
-    def calcular_precio(self) -> float: #la flechita corresponde al Type Hint
+    def calcular_precio(self) -> float: #la flechita corresponde al Type Hint. Método de instancia
         precio = (self.costo + (self.costo * self.IVA)) - (self.costo * self.descuento)
         return round(precio, 2)
 
-    @classmethod
+    @classmethod #método de clase
     def actualizar_iva(cls, nuevo_IVA: float): #no hay flechita de Type Hint porque no devuelve nada
         cls.IVA = nuevo_IVA
 
