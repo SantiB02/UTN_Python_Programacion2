@@ -55,5 +55,8 @@ class ProgramaPrincipal():
         conexion.commit()
         conexion.close()
 
+         # Volver al menú principal
+        return
+
 programa = ProgramaPrincipal()
 programa.menu()
