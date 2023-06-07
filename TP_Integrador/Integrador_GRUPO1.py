@@ -34,10 +34,16 @@ class ProgramaPrincipal():
             if respuesta == 0:
                 repite = 0
 
+#Falta un método de ProgramaPrincipal para crear tablas a usar
+    #def crearTablas(self):
+
+    
     def cargar_libros(self):
         # Conectarse a la base de datos
-        conexion = sqlite3.connect('libros.db')
-        cursor = conexion.cursor()
+        #conexion = sqlite3.connect('libros.db')
+        #cursor = conexion.cursor()
+        conexion = Conexiones()
+        conexion.abrirConexion()
 
         # Solicitar los datos al usuario para un libro
         id_libro = int(input("Ingrese el ID del libro: "))
@@ -48,15 +54,17 @@ class ProgramaPrincipal():
         precio = float(input("Ingrese el precio del libro: "))
 
         # Insertar los datos en la base de datos
-        cursor.execute("INSERT INTO libros (ID, ISBN, Título, Autor, Género, Precio) VALUES (?, ?, ?, ?, ?, ?)",
+        conexion.cursor.execute("INSERT INTO libros (ID, ISBN, Título, Autor, Género, Precio) VALUES (?, ?, ?, ?, ?, ?)",
                        (id_libro, isbn, titulo, autor, genero, precio))
 
         # Guardar los cambios y cerrar la conexión
         conexion.commit()
         conexion.close()
 
-         # Volver al menú principal
-        return
+class Conexiones():
+    def abrirConexion(self):
+        self.conexion = sqlite3.connect('libros.db')
+        self.cursor = self.conexion.cursor()
 
 programa = ProgramaPrincipal()
 programa.menu()
