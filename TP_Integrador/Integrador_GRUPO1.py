@@ -35,31 +35,76 @@ class ProgramaPrincipal():
                 repite = 0
 
 #Falta un método de ProgramaPrincipal para crear tablas a usar
-    #def crearTablas(self):
+def crear_tablas(self):
+    conexion = Conexiones()
+    conexion.abrir_conexion()
+    try:
+        conexion.mi_cursor.execute("DROP TABLE IF EXISTS Libros")
+        conexion.mi_cursor.execute("""
+            CREATE TABLE Libros (
+                ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                ISBN TEXT UNIQUE,
+                Titulo TEXT,
+                Autor TEXT,
+                Genero TEXT,
+                Precio REAL,
+                FechaUltimoPrecio TEXT,
+                CantDisponible INTEGER
+            )
+        """)
+        conexion.mi_cursor.execute("DROP TABLE IF EXISTS Ventas")
+        conexion.mi_cursor.execute("""
+            CREATE TABLE Ventas (
+                ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                LibroID INTEGER,
+                Cantidad INTEGER,
+                FechaVenta TEXT,
+                FOREIGN KEY (LibroID) REFERENCES Libros(ID)
+            )
+        """)
+        conexion.mi_cursor.execute("DROP TABLE IF EXISTS historico_libros")
+        conexion.mi_cursor.execute("""
+            CREATE TABLE historico_libros (
+                ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                ISBN TEXT UNIQUE,
+                Titulo TEXT,
+                Autor TEXT,
+                Genero TEXT,
+                Precio REAL,
+                FechaUltimoPrecio TEXT,
+                CantDisponible INTEGER
+            )
+        """)
+        conexion.mi_conexion.commit()
+        print("Tablas creadas exitosamente.")
+    except:
+        print("Error al crear las tablas.")
+    finally:
+        conexion.cerrar_conexion()
 
     
-    def cargar_libros(self):
-        # Conectarse a la base de datos
-        #conexion = sqlite3.connect('libros.db')
-        #cursor = conexion.cursor()
-        conexion = Conexiones()
-        conexion.abrirConexion()
-
-        # Solicitar los datos al usuario para un libro
-        id_libro = int(input("Ingrese el ID del libro: "))
+def cargar_libros(self):
+    try:
         isbn = input("Ingrese el ISBN del libro: ")
         titulo = input("Ingrese el título del libro: ")
         autor = input("Ingrese el autor del libro: ")
         genero = input("Ingrese el género del libro: ")
         precio = float(input("Ingrese el precio del libro: "))
+        fecha_ultimo_precio = input("Ingrese la fecha del último precio (DD-MM-YYYY): ")
+        cant_disponible = int(input("Ingrese la cantidad disponible del libro: "))
 
-        # Insertar los datos en la base de datos
-        conexion.cursor.execute("INSERT INTO libros (ID, ISBN, Título, Autor, Género, Precio) VALUES (?, ?, ?, ?, ?, ?)",
-                       (id_libro, isbn, titulo, autor, genero, precio))
-
-        # Guardar los cambios y cerrar la conexión
-        conexion.commit()
-        conexion.close()
+        conexion = Conexiones()
+        conexion.abrir_conexion()
+        conexion.mi_cursor.execute("""
+            INSERT INTO Libros (ISBN, Titulo, Autor, Genero, Precio, FechaUltimoPrecio, CantDisponible)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (isbn, titulo, autor, genero, precio, fecha_ultimo_precio, cant_disponible))
+        conexion.mi_conexion.commit()
+        print("Libro cargado exitosamente.")
+    except:
+        print("Error al cargar el libro.")
+    finally:
+        conexion.cerrar_conexion()
 
 class Conexiones():
     def abrirConexion(self):
