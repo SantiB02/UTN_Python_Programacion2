@@ -221,6 +221,31 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()
 
+    def mostrar_libros(self):
+        try:
+            conexion = Conexiones()
+            conexion.abrir_conexion()
+            libros = conexion.mi_cursor.execute("SELECT * FROM Libros ORDER BY ID, Autor, Titulo").fetchall()
+
+            if libros:
+                print("Listado de Libros:")
+                for libro in libros:
+                    print("ID:", libro[0])
+                    print("ISBN:", libro[1])
+                    print("Título:", libro[2])
+                    print("Autor:", libro[3])
+                    print("Género:", libro[4])
+                    print("Precio:", libro[5])
+                    print("Fecha último precio:", libro[6])
+                    print("Cantidad disponible:", libro[7])
+                    print("------------------------")
+            else:
+                print("No hay libros para mostrar.")
+        except:
+            print("Error al mostrar los libros.")
+        finally:
+            conexion.cerrar_conexion()
+
 class Conexiones():
     def __init__(self):
         self.mi_conexion = None
