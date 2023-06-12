@@ -6,10 +6,10 @@ class ProgramaPrincipal():
         repite = 1
         while repite != 0:
             print("LIBRERÍA 'Buscalibre' - Menú de opciones")
-            print("1- Cargar Libros")  # Coria
-            print("2- Modificar precio de un libro")  # Santi
+            print("1- Cargar Libros")
+            print("2- Modificar precio de un libro")
             print("3- Borrar un libro")
-            print("4- Cargar disponibilidad")  # Ivo
+            print("4- Cargar disponibilidad")
             print("5- Listado de libros")
             print("6- Ventas")
             print("7- Actualizar Precios")
@@ -17,7 +17,7 @@ class ProgramaPrincipal():
             print("0- Salir del menú")
             respuesta = int(input("Ingrese una opción del menú:"))
             if respuesta == 1:
-                self.cargar_libros()  # Coria
+                self.cargar_libros()
             if respuesta == 2:
                 self.modificar_precio_libro()
             if respuesta == 3:
@@ -90,10 +90,8 @@ class ProgramaPrincipal():
             autor = input("Ingrese el autor del libro: ")
             genero = input("Ingrese el género del libro: ")
             precio = float(input("Ingrese el precio del libro: "))
-            fecha_ultimo_precio = input(
-                "Ingrese la fecha del último precio (DD-MM-YYYY): ")
-            cant_disponible = int(
-                input("Ingrese la cantidad disponible del libro: "))
+            fecha_ultimo_precio = input("Ingrese la fecha del último precio (DD-MM-YYYY): ")
+            cant_disponible = int(input("Ingrese la cantidad disponible del libro: "))
 
             conexion = Conexiones()
             conexion.abrir_conexion()
