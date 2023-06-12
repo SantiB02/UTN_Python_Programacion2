@@ -90,8 +90,17 @@ class ProgramaPrincipal():
             autor = input("Ingrese el autor del libro: ")
             genero = input("Ingrese el género del libro: ")
             precio = float(input("Ingrese el precio del libro: "))
+
+            while precio < 1: #validacion
+                print("ERROR! El precio debe ser mayor o igual a 1")
+                precio = float(input("Ingrese el precio del libro: "))
+
             fecha_ultimo_precio = input("Ingrese la fecha del último precio (DD-MM-YYYY): ")
             cant_disponible = int(input("Ingrese la cantidad disponible del libro: "))
+
+            while cant_disponible < 1: #validacion
+                print("ERROR! La cantidad debe ser mayor a 0")
+                cant_disponible = int(input("Ingrese la cantidad disponible del libro: "))
 
             conexion = Conexiones()
             conexion.abrir_conexion()
@@ -114,7 +123,7 @@ class ProgramaPrincipal():
 
             conexion = Conexiones()
             conexion.abrir_conexion()
-            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id,)).fetchone()
+            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id)).fetchone()
 
             if libro:
                 print("Información del libro:")
@@ -147,7 +156,7 @@ class ProgramaPrincipal():
 
             conexion = Conexiones()
             conexion.abrir_conexion()
-            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id,)).fetchone()
+            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id)).fetchone()
 
             if libro:
                 print("Información del libro:")
@@ -162,7 +171,7 @@ class ProgramaPrincipal():
 
                 confirmacion = input("¿Desea borrar el libro? (s/n): ")
                 if confirmacion.lower() == "s":
-                    conexion.mi_cursor.execute("DELETE FROM Libros WHERE ID = ?", (libro_id,))
+                    conexion.mi_cursor.execute("DELETE FROM Libros WHERE ID = ?", (libro_id))
                     conexion.mi_conexion.commit()
                     print("Libro borrado exitosamente.")
                 else:
@@ -174,6 +183,43 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()        
 
+    def cargar_disponibilidad(self):
+        try:
+            libro_id = int(input("Ingrese el ID del libro: "))
+            incremento_cant = int(input("Ingrese el incremento de cantidad disponible: "))
+            while incremento_cant < 1: #validacion
+                print("ERROR! La cantidad debe ser mayor a 0")
+                incremento_cant = int(input("Ingrese el incremento de cantidad disponible: "))
+
+            conexion = Conexiones()
+            conexion.abrir_conexion()
+            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id,)).fetchone()
+
+            if libro:
+                print("Información del libro:")
+                print("ID:", libro[0])
+                print("ISBN:", libro[1])
+                print("Título:", libro[2])
+                print("Autor:", libro[3])
+                print("Género:", libro[4])
+                print("Precio:", libro[5])
+                print("Fecha último precio:", libro[6])
+                print("Cantidad disponible:", libro[7])
+
+                confirmacion = input("¿Desea incrementar la cantidad disponible? (s/n): ")
+                if confirmacion.lower() == "s":
+                    nueva_cant = libro[7] + incremento_cant
+                    conexion.mi_cursor.execute("UPDATE Libros SET CantDisponible = ? WHERE ID = ?", (nueva_cant, libro_id))
+                    conexion.mi_conexion.commit()
+                    print("Cantidad disponible del libro actualizada exitosamente.")
+                else:
+                    print("Actualización de la cantidad disponible cancelada.")
+            else:
+                print("No se encontró un libro con el ID proporcionado.")
+        except:
+            print("Error al cargar la disponibilidad del libro.")
+        finally:
+            conexion.cerrar_conexion()
 
 class Conexiones():
     def __init__(self):
