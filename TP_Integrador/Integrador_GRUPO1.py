@@ -142,6 +142,39 @@ class ProgramaPrincipal():
             print("Error al modificar el precio del libro.")
         finally:
             conexion.cerrar_conexion()
+            
+    def borrar_libro(self):
+        try:
+            libro_id = int(input("Ingrese el ID del libro a borrar: "))
+
+            conexion = Conexiones()
+            conexion.abrir_conexion()
+            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id,)).fetchone()
+
+            if libro:
+                print("Información del libro:")
+                print("ID:", libro[0])
+                print("ISBN:", libro[1])
+                print("Título:", libro[2])
+                print("Autor:", libro[3])
+                print("Género:", libro[4])
+                print("Precio:", libro[5])
+                print("Fecha último precio:", libro[6])
+                print("Cantidad disponible:", libro[7])
+
+                confirmacion = input("¿Desea borrar el libro? (s/n): ")
+                if confirmacion.lower() == "s":
+                    conexion.mi_cursor.execute("DELETE FROM Libros WHERE ID = ?", (libro_id,))
+                    conexion.mi_conexion.commit()
+                    print("Libro borrado exitosamente.")
+                else:
+                    print("Borrado del libro cancelado.")
+            else:
+                print("No se encontró un libro con el ID proporcionado.")
+        except:
+            print("Error al borrar el libro.")
+        finally:
+            conexion.cerrar_conexion()        
 
 
 class Conexiones():
