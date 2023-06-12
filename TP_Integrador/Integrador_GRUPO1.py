@@ -108,6 +108,41 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()
 
+    
+    def modificar_precio_libro(self):
+        try:
+            libro_id = int(input("Ingrese el ID del libro a modificar: "))
+            nuevo_precio = float(input("Ingrese el nuevo precio del libro: "))
+
+            conexion = Conexiones()
+            conexion.abrir_conexion()
+            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id,)).fetchone()
+
+            if libro:
+                print("Información del libro:")
+                print("ID:", libro[0])
+                print("ISBN:", libro[1])
+                print("Título:", libro[2])
+                print("Autor:", libro[3])
+                print("Género:", libro[4])
+                print("Precio:", libro[5])
+                print("Fecha último precio:", libro[6])
+                print("Cantidad disponible:", libro[7])
+
+                confirmacion = input("¿Desea modificar el precio? (s/n): ")
+                if confirmacion.lower() == "s":
+                    conexion.mi_cursor.execute("UPDATE Libros SET Precio = ? WHERE ID = ?", (nuevo_precio, libro_id))
+                    conexion.mi_conexion.commit()
+                    print("Precio del libro modificado exitosamente.")
+                else:
+                    print("Modificación del precio cancelada.")
+            else:
+                print("No se encontró un libro con el ID proporcionado.")
+        except:
+            print("Error al modificar el precio del libro.")
+        finally:
+            conexion.cerrar_conexion()
+
 
 class Conexiones():
     def __init__(self):
@@ -127,6 +162,11 @@ class Conexiones():
             self.mi_conexion.close()
         except:
             print("Error al cerrar la conexión con la base de datos.")
+    
+    
+
+
+
 
 
 programa = ProgramaPrincipal()
