@@ -11,11 +11,11 @@ class ProgramaPrincipal():
             print("3- Borrar un libro")
             print("4- Cargar disponibilidad")
             print("5- Listado de libros")
-            print("6- Ventas")
-            print("7- Actualizar Precios")
-            print("8- Registros anteriores a una fecha")
+            print("6- Ventas") #ivo
+            print("7- Actualizar Precios") #santi
+            print("8- Registros anteriores a una fecha") #leo
             print("0- Salir del menú")
-            respuesta = int(input("Ingrese una opción del menú:"))
+            respuesta = int(input("Ingrese una opción del menú: "))
             if respuesta == 1:
                 self.cargar_libros()
             if respuesta == 2:
@@ -25,7 +25,19 @@ class ProgramaPrincipal():
             if respuesta == 4:
                 self.cargar_disponibilidad()
             if respuesta == 5:
-                self.listado_libros()
+                print("Como desea ordenar los libros? 1- ID 2- Autor 3- Titulo")
+                rta = int(input("Ingrese una opcion: "))
+                if rta == 1:
+                    orden = "ID"
+                    self.mostrar_libros(orden)
+                elif rta == 2:
+                    orden = "Autor"
+                    self.mostrar_libros(orden)
+                elif rta == 3:
+                    orden = "Titulo"
+                    self.mostrar_libros(orden)
+                else:
+                    print("Opcion incorrecta")
             if respuesta == 6:
                 self.ventas()
             if respuesta == 7:
@@ -221,12 +233,11 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()
 
-    def mostrar_libros(self):
+    def mostrar_libros(self, orden: str):
         try:
             conexion = Conexiones()
             conexion.abrir_conexion()
-            libros = conexion.mi_cursor.execute("SELECT * FROM Libros ORDER BY ID, Autor, Titulo").fetchall()
-
+            libros = conexion.mi_cursor.execute("SELECT * FROM Libros ORDER BY ?", (orden)).fetchall()
             if libros:
                 print("Listado de Libros:")
                 for libro in libros:
@@ -265,12 +276,6 @@ class Conexiones():
         except:
             print("Error al cerrar la conexión con la base de datos.")
     
-    
-
-
-
-
-
 programa = ProgramaPrincipal()
 programa.crear_tablas()
 programa.menu()
