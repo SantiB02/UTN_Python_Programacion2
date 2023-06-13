@@ -37,10 +37,8 @@ class ProgramaPrincipal():
                 else:
                     print("Opcion incorrecta")
             if respuesta == 6:
-                self.ventas()
                 self.realizar_venta()
             if respuesta == 7:
-                self.actualizar_precios()
                 self.actualizar_precios() #REVISAR FECHA_ACTUAL (NO ESTÁ PEDIDA AL USUARIO)
             if respuesta == 8:
                 self.registros_anteriores()
@@ -258,6 +256,36 @@ class ProgramaPrincipal():
             conexion.cerrar_conexion()
 
     #ACÁ VA REALIZAR_VENTA(SELF)
+    def realizar_venta(self):
+        try:
+            libro_id = int(input("Ingrese el ID del libro vendido: "))
+            cantidad = int(input("Ingrese la cantidad vendida: "))
+            fecha_venta = input("Ingrese la fecha de la venta (YYYY-MM-DD): ")
+
+            conexion = Conexiones()
+            conexion.abrir_conexion()
+            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id,)).fetchone()
+
+            if libro:
+                if cantidad <= libro[7]:
+                    confirmacion = input("¿Desea registrar la venta? (s/n): ")
+                    if confirmacion.lower() == "s":
+                        nueva_cant = libro[7] - cantidad
+                        conexion.mi_cursor.execute("INSERT INTO Ventas (LibroID, Cantidad, FechaVenta) VALUES (?, ?, ?)",
+                                                    (libro_id, cantidad, fecha_venta))
+                        conexion.mi_cursor.execute("UPDATE Libros SET CantDisponible = ? WHERE ID = ?", (nueva_cant, libro_id))
+                        conexion.mi_conexion.commit()
+                        print("Venta registrada exitosamente.")
+                    else:
+                        print("Registro de la venta cancelado.")
+                else:
+                    print("No hay suficiente cantidad disponible del libro.")
+            else:
+                print("No se encontró un libro con el ID proporcionado.")
+        except:
+            print("Error al realizar la venta.")
+        finally:
+            conexion.cerrar_conexion()
 
     def actualizar_precios(self):
         try:
@@ -297,6 +325,32 @@ class ProgramaPrincipal():
             conexion.cerrar_conexion()
 
     #ACÁ VA MOSTRAR_REGISTROS_ANTERIORES(SELF)
+    def mostrar_registros_anteriores(self):
+        try:
+            fecha_limite = input("Ingrese la fecha límite (YYYY-MM-DD): ")
+
+            conexion = Conexiones()
+            conexion.abrir_conexion()
+            registros = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE FechaUltimoPrecio < ?", (fecha_limite,)).fetchall()
+
+            if registros:
+                print("Registros anteriores a la fecha límite:")
+                for registro in registros:
+                    print("ID:", registro[0])
+                    print("ISBN:", registro[1])
+                    print("Título:", registro[2])
+                    print("Autor:", registro[3])
+                    print("Género:", registro[4])
+                    print("Precio:", registro[5])
+                    print("Fecha último precio:", registro[6])
+                    print("Cantidad disponible:", registro[7])
+                    print("------------------------")
+            else:
+                print("No hay registros anteriores a la fecha límite.")
+        except:
+            print("Error al mostrar los registros anteriores.")
+        finally:
+            conexion.cerrar_conexion()
 
 class Conexiones():
     def __init__(self):
