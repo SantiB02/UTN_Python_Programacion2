@@ -1,8 +1,0 @@
-CREATE TABLE libros (
-    ID INTEGER PRIMARY KEY,
-    ISBN TEXT UNIQUE,
-    Título TEXT,
-    Autor TEXT,
-    Género TEXT,
-    Precio REAL
-);
