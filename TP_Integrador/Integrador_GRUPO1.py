@@ -1,5 +1,5 @@
 import sqlite3
-
+import math
 
 class ProgramaPrincipal():
     def menu(self):
@@ -53,12 +53,12 @@ class ProgramaPrincipal():
             conexion.mi_cursor.execute("""
                 CREATE TABLE Libros (
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    ISBN TEXT UNIQUE,
+                    ISBN INTEGER UNIQUE,
                     Titulo TEXT,
                     Autor TEXT,
                     Genero TEXT,
                     Precio REAL,
-                    FechaUltimoPrecio TEXT,
+                    FechaUltimoPrecio INTEGER,
                     CantDisponible INTEGER
                 )
             """)
@@ -76,12 +76,12 @@ class ProgramaPrincipal():
             conexion.mi_cursor.execute("""
                 CREATE TABLE historico_libros (
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    ISBN TEXT UNIQUE,
+                    ISBN INTEGER UNIQUE,
                     Titulo TEXT,
                     Autor TEXT,
                     Genero TEXT,
                     Precio REAL,
-                    FechaUltimoPrecio TEXT,
+                    FechaUltimoPrecio INTEGER,
                     CantDisponible INTEGER
                 )
             """)
@@ -95,22 +95,57 @@ class ProgramaPrincipal():
 
     def cargar_libros(self):
         try:
-            isbn = input("Ingrese el ISBN del libro: ")
+            isbn = int(input("Ingrese el ISBN del libro: "))
+            while len(str(isbn)) != 10 or not isinstance(isbn, int):
+                print("ERROR! El ISBN debe ser un numero de 10 digitos")
+                isbn = int(input("Ingrese el ISBN del libro: "))
+
             titulo = input("Ingrese el título del libro: ")
             autor = input("Ingrese el autor del libro: ")
+            
+            while autor.isdigit():
+                print("ERROR! Ingrese un nombre de autor valido")
+                autor = input("Ingrese el autor del libro: ")
+
             genero = input("Ingrese el género del libro: ")
+            
+            while genero.isdigit():
+                print("ERROR! Ingrese un genero valido")
+                genero = input("Ingrese el género del libro: ")
+
             precio = float(input("Ingrese el precio del libro: "))
 
             while precio < 1: #validacion
                 print("ERROR! El precio debe ser mayor o igual a 1")
                 precio = float(input("Ingrese el precio del libro: "))
+            precio = round(precio, 2)
 
-            fecha_ultimo_precio = input("Ingrese la fecha del último precio (DD-MM-YYYY): ")
+            dia_ultimo_precio = int(input("Ingrese el dia del último precio (DD): "))
+
+            while len(str(dia_ultimo_precio)) != 2 or not isinstance(dia_ultimo_precio, int) or dia_ultimo_precio < 1 or dia_ultimo_precio > 31:
+                print("ERROR! Ingrese un dia correcto")
+                dia_ultimo_precio = int(input("Ingrese el dia del último precio (DD): "))
+
+            mes_ultimo_precio = int(input("Ingrese el mes del último precio (MM): "))
+
+            while len(str(mes_ultimo_precio)) != 2 or not isinstance(mes_ultimo_precio, int) or mes_ultimo_precio < 1 or mes_ultimo_precio > 12:
+                print("ERROR! Ingrese un mes correcto")
+                mes_ultimo_precio = int(input("Ingrese el mes del último precio (MM): "))
+
+            anio_ultimo_precio = int(input("Ingrese el año del último precio (AAAA): "))
+
+            while len(str(anio_ultimo_precio)) != 4 or not isinstance(anio_ultimo_precio, int):
+                print("ERROR! Ingrese un año correcto")
+                anio_ultimo_precio = int(input("Ingrese el año del último precio (AAAA): "))
+
             cant_disponible = int(input("Ingrese la cantidad disponible del libro: "))
 
-            while cant_disponible < 1: #validacion
+            while cant_disponible < 1 or not isinstance(cant_disponible, int): #validacion
                 print("ERROR! La cantidad debe ser mayor a 0")
                 cant_disponible = int(input("Ingrese la cantidad disponible del libro: "))
+
+            fecha_ultimo_precio = str(dia_ultimo_precio) + str(mes_ultimo_precio) + str(anio_ultimo_precio)
+            fecha_ultimo_precio = int(fecha_ultimo_precio)
 
             conexion = Conexiones()
             conexion.abrir_conexion()
@@ -255,7 +290,6 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()
 
-    #ACÁ VA REALIZAR_VENTA(SELF)
     def realizar_venta(self):
         try:
             libro_id = int(input("Ingrese el ID del libro vendido: "))
