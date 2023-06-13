@@ -28,14 +28,11 @@ class ProgramaPrincipal():
                 print("Como desea ordenar los libros? 1- ID 2- Autor 3- Titulo")
                 rta = int(input("Ingrese una opcion: "))
                 if rta == 1:
-                    orden = "ID"
-                    self.mostrar_libros(orden)
+                    self.mostrar_libros("ID") #muestro libros ordenados por ID
                 elif rta == 2:
-                    orden = "Autor"
-                    self.mostrar_libros(orden)
+                    self.mostrar_libros("Autor") #muestro libros ordenados por autor
                 elif rta == 3:
-                    orden = "Titulo"
-                    self.mostrar_libros(orden)
+                    self.mostrar_libros("Titulo") #muestro libros ordenados por título
                 else:
                     print("Opcion incorrecta")
             if respuesta == 6:
@@ -135,7 +132,7 @@ class ProgramaPrincipal():
 
             conexion = Conexiones()
             conexion.abrir_conexion()
-            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id)).fetchone()
+            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id,)).fetchone()
 
             if libro:
                 print("Información del libro:")
@@ -168,7 +165,7 @@ class ProgramaPrincipal():
 
             conexion = Conexiones()
             conexion.abrir_conexion()
-            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id)).fetchone()
+            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id,)).fetchone()
 
             if libro:
                 print("Información del libro:")
@@ -183,7 +180,7 @@ class ProgramaPrincipal():
 
                 confirmacion = input("¿Desea borrar el libro? (s/n): ")
                 if confirmacion.lower() == "s":
-                    conexion.mi_cursor.execute("DELETE FROM Libros WHERE ID = ?", (libro_id))
+                    conexion.mi_cursor.execute("DELETE FROM Libros WHERE ID = ?", (libro_id,))
                     conexion.mi_conexion.commit()
                     print("Libro borrado exitosamente.")
                 else:
@@ -237,9 +234,9 @@ class ProgramaPrincipal():
         try:
             conexion = Conexiones()
             conexion.abrir_conexion()
-            libros = conexion.mi_cursor.execute("SELECT * FROM Libros ORDER BY ?", (orden)).fetchall()
+            libros = conexion.mi_cursor.execute(f"SELECT * FROM Libros ORDER BY {orden}").fetchall()
             if libros:
-                print("Listado de Libros:")
+                print(f"Listado de Libros ordenados por {orden}:")
                 for libro in libros:
                     print("ID:", libro[0])
                     print("ISBN:", libro[1])
