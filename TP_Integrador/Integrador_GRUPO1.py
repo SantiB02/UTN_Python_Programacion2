@@ -12,7 +12,7 @@ class ProgramaPrincipal():
             print("4- Cargar disponibilidad")
             print("5- Listado de libros")
             print("6- Ventas") #ivo
-            print("7- Actualizar Precios") #santi
+            print("7- Actualizar Precios") #REVISAR FECHA_ACTUAL (NO ESTÁ PEDIDA AL USUARIO)
             print("8- Registros anteriores a una fecha") #leo
             print("0- Salir del menú")
             respuesta = int(input("Ingrese una opción del menú: "))
@@ -36,9 +36,9 @@ class ProgramaPrincipal():
                 else:
                     print("Opcion incorrecta")
             if respuesta == 6:
-                self.ventas()
+                self.realizar_venta()
             if respuesta == 7:
-                self.actualizar_precios()
+                self.actualizar_precios() #REVISAR FECHA_ACTUAL (NO ESTÁ PEDIDA AL USUARIO)
             if respuesta == 8:
                 self.registros_anteriores()
             if respuesta == 0:
@@ -253,6 +253,47 @@ class ProgramaPrincipal():
             print("Error al mostrar los libros.")
         finally:
             conexion.cerrar_conexion()
+
+    #ACÁ VA REALIZAR_VENTA(SELF)
+
+    def actualizar_precios(self):
+        try:
+            porcentaje_aumento = float(input("Ingrese el porcentaje de aumento de precios: "))
+
+            conexion = Conexiones()
+            conexion.abrir_conexion()
+            libros = conexion.mi_cursor.execute("SELECT * FROM Libros").fetchall()
+
+            if libros:
+                print("Precios antes de la actualización:")
+                for libro in libros:
+                    print("ID:", libro[0])
+                    print("ISBN:", libro[1])
+                    print("Título:", libro[2])
+                    print("Autor:", libro[3])
+                    print("Género:", libro[4])
+                    print("Precio:", libro[5])
+                    print("Fecha último precio:", libro[6])
+                    print("Cantidad disponible:", libro[7])
+                    print("------------------------")
+
+                confirmacion = input("¿Desea actualizar los precios? (s/n): ")
+                if confirmacion.lower() == "s":
+                    for libro in libros:
+                        nuevo_precio = libro[5] + libro[5] * porcentaje_aumento / 100
+                        conexion.mi_cursor.execute("UPDATE Libros SET Precio = ?, FechaUltimoPrecio = ? WHERE ID = ?", (nuevo_precio, fecha_actual, libro[0]))
+                    conexion.mi_conexion.commit()
+                    print("Precios actualizados exitosamente.")
+                else:
+                    print("Actualización de precios cancelada.")
+            else:
+                print("No hay libros para actualizar.")
+        except:
+            print("Error al actualizar los precios.")
+        finally:
+            conexion.cerrar_conexion()
+
+    #ACÁ VA MOSTRAR_REGISTROS_ANTERIORES(SELF)
 
 class Conexiones():
     def __init__(self):
