@@ -11,11 +11,11 @@ class ProgramaPrincipal():
             print("3- Borrar un libro")
             print("4- Cargar disponibilidad")
             print("5- Listado de libros")
-            print("6- Ventas") #ivo
-            print("7- Actualizar Precios") #REVISAR FECHA_ACTUAL (NO ESTÁ PEDIDA AL USUARIO)
-            print("8- Registros anteriores a una fecha") #leo
+            print("6- Ventas")
+            print("7- Actualizar Precios")
+            print("8- Registros anteriores a una fecha")
             print("0- Salir del menú")
-            respuesta = int(input("Ingrese una opción del menú: "))
+            respuesta = int(input("Ingrese una opción del menú:"))
             if respuesta == 1:
                 self.cargar_libros()
             if respuesta == 2:
@@ -25,20 +25,11 @@ class ProgramaPrincipal():
             if respuesta == 4:
                 self.cargar_disponibilidad()
             if respuesta == 5:
-                print("Como desea ordenar los libros? 1- ID 2- Autor 3- Titulo")
-                rta = int(input("Ingrese una opcion: "))
-                if rta == 1:
-                    self.mostrar_libros("ID") #muestro libros ordenados por ID
-                elif rta == 2:
-                    self.mostrar_libros("Autor") #muestro libros ordenados por autor
-                elif rta == 3:
-                    self.mostrar_libros("Titulo") #muestro libros ordenados por título
-                else:
-                    print("Opcion incorrecta")
+                self.listado_libros()
             if respuesta == 6:
-                self.realizar_venta()
+                self.ventas()
             if respuesta == 7:
-                self.actualizar_precios() #REVISAR FECHA_ACTUAL (NO ESTÁ PEDIDA AL USUARIO)
+                self.actualizar_precios()
             if respuesta == 8:
                 self.registros_anteriores()
             if respuesta == 0:
@@ -99,17 +90,8 @@ class ProgramaPrincipal():
             autor = input("Ingrese el autor del libro: ")
             genero = input("Ingrese el género del libro: ")
             precio = float(input("Ingrese el precio del libro: "))
-
-            while precio < 1: #validacion
-                print("ERROR! El precio debe ser mayor o igual a 1")
-                precio = float(input("Ingrese el precio del libro: "))
-
             fecha_ultimo_precio = input("Ingrese la fecha del último precio (DD-MM-YYYY): ")
             cant_disponible = int(input("Ingrese la cantidad disponible del libro: "))
-
-            while cant_disponible < 1: #validacion
-                print("ERROR! La cantidad debe ser mayor a 0")
-                cant_disponible = int(input("Ingrese la cantidad disponible del libro: "))
 
             conexion = Conexiones()
             conexion.abrir_conexion()
@@ -190,15 +172,12 @@ class ProgramaPrincipal():
         except:
             print("Error al borrar el libro.")
         finally:
-            conexion.cerrar_conexion()        
+            conexion.cerrar_conexion()   
 
     def cargar_disponibilidad(self):
         try:
             libro_id = int(input("Ingrese el ID del libro: "))
             incremento_cant = int(input("Ingrese el incremento de cantidad disponible: "))
-            while incremento_cant < 1: #validacion
-                print("ERROR! La cantidad debe ser mayor a 0")
-                incremento_cant = int(input("Ingrese el incremento de cantidad disponible: "))
 
             conexion = Conexiones()
             conexion.abrir_conexion()
@@ -230,13 +209,14 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()
 
-    def mostrar_libros(self, orden: str):
+    def mostrar_libros(self):
         try:
             conexion = Conexiones()
             conexion.abrir_conexion()
-            libros = conexion.mi_cursor.execute(f"SELECT * FROM Libros ORDER BY {orden}").fetchall()
+            libros = conexion.mi_cursor.execute("SELECT * FROM Libros ORDER BY ID, Autor, Titulo").fetchall()
+
             if libros:
-                print(f"Listado de Libros ordenados por {orden}:")
+                print("Listado de Libros:")
                 for libro in libros:
                     print("ID:", libro[0])
                     print("ISBN:", libro[1])
@@ -254,7 +234,36 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()
 
-    #ACÁ VA REALIZAR_VENTA(SELF)
+    def realizar_venta(self):
+        try:
+            libro_id = int(input("Ingrese el ID del libro vendido: "))
+            cantidad = int(input("Ingrese la cantidad vendida: "))
+            fecha_venta = input("Ingrese la fecha de la venta (YYYY-MM-DD): ")
+
+            conexion = Conexiones()
+            conexion.abrir_conexion()
+            libro = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE ID = ?", (libro_id,)).fetchone()
+
+            if libro:
+                if cantidad <= libro[7]:
+                    confirmacion = input("¿Desea registrar la venta? (s/n): ")
+                    if confirmacion.lower() == "s":
+                        nueva_cant = libro[7] - cantidad
+                        conexion.mi_cursor.execute("INSERT INTO Ventas (LibroID, Cantidad, FechaVenta) VALUES (?, ?, ?)",
+                                                    (libro_id, cantidad, fecha_venta))
+                        conexion.mi_cursor.execute("UPDATE Libros SET CantDisponible = ? WHERE ID = ?", (nueva_cant, libro_id))
+                        conexion.mi_conexion.commit()
+                        print("Venta registrada exitosamente.")
+                    else:
+                        print("Registro de la venta cancelado.")
+                else:
+                    print("No hay suficiente cantidad disponible del libro.")
+            else:
+                print("No se encontró un libro con el ID proporcionado.")
+        except:
+            print("Error al realizar la venta.")
+        finally:
+            conexion.cerrar_conexion() 
 
     def actualizar_precios(self):
         try:
@@ -281,7 +290,8 @@ class ProgramaPrincipal():
                 if confirmacion.lower() == "s":
                     for libro in libros:
                         nuevo_precio = libro[5] + libro[5] * porcentaje_aumento / 100
-                        conexion.mi_cursor.execute("UPDATE Libros SET Precio = ?, FechaUltimoPrecio = ? WHERE ID = ?", (nuevo_precio, fecha_actual, libro[0]))
+                        conexion.mi_cursor.execute("UPDATE Libros SET Precio = ?, FechaUltimoPrecio = ? WHERE ID = ?",
+                                                    (nuevo_precio, fecha_actual, libro[0]))
                     conexion.mi_conexion.commit()
                     print("Precios actualizados exitosamente.")
                 else:
@@ -293,7 +303,32 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()
 
-    #ACÁ VA MOSTRAR_REGISTROS_ANTERIORES(SELF)
+    def mostrar_registros_anteriores(self):
+        try:
+            fecha_limite = input("Ingrese la fecha límite (YYYY-MM-DD): ")
+
+            conexion = Conexiones()
+            conexion.abrir_conexion()
+            registros = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE FechaUltimoPrecio < ?", (fecha_limite,)).fetchall()
+
+            if registros:
+                print("Registros anteriores a la fecha límite:")
+                for registro in registros:
+                    print("ID:", registro[0])
+                    print("ISBN:", registro[1])
+                    print("Título:", registro[2])
+                    print("Autor:", registro[3])
+                    print("Género:", registro[4])
+                    print("Precio:", registro[5])
+                    print("Fecha último precio:", registro[6])
+                    print("Cantidad disponible:", registro[7])
+                    print("------------------------")
+            else:
+                print("No hay registros anteriores a la fecha límite.")
+        except:
+            print("Error al mostrar los registros anteriores.")
+        finally:
+            conexion.cerrar_conexion()
 
 class Conexiones():
     def __init__(self):
