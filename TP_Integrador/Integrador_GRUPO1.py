@@ -68,7 +68,7 @@ class ProgramaPrincipal():
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
                     LibroID INTEGER,
                     Cantidad INTEGER,
-                    FechaVenta TEXT,
+                    FechaVenta INTEGER,
                     FOREIGN KEY (LibroID) REFERENCES Libros(ID)
                 )
             """)
