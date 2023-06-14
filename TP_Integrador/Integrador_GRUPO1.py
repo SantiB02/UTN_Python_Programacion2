@@ -1,5 +1,6 @@
 import sqlite3
 import math
+import datetime
 
 class ProgramaPrincipal():
     def menu(self):
@@ -13,7 +14,6 @@ class ProgramaPrincipal():
             print("5- Listado de libros")
             print("6- Ventas") #ivo
             print("7- Actualizar Precios") #santi
-            print("7- Actualizar Precios") #REVISAR FECHA_ACTUAL (NO ESTÁ PEDIDA AL USUARIO)
             print("8- Registros anteriores a una fecha") #leo
             print("0- Salir del menú")
             respuesta = int(input("Ingrese una opción del menú: "))
@@ -120,7 +120,8 @@ class ProgramaPrincipal():
                 precio = float(input("Ingrese el precio del libro: "))
             precio = round(precio, 2)
 
-            dia_ultimo_precio = int(input("Ingrese el dia del último precio (DD): "))
+            dia_ultimo_precio = int(input("Ingrese el día del último precio (DD): "))
+
 
             while len(str(dia_ultimo_precio)) != 2 or not isinstance(dia_ultimo_precio, int) or dia_ultimo_precio < 1 or dia_ultimo_precio > 31:
                 print("ERROR! Ingrese un dia correcto")
@@ -178,7 +179,13 @@ class ProgramaPrincipal():
                 print("Autor:", libro[3])
                 print("Género:", libro[4])
                 print("Precio:", libro[5])
-                print("Fecha último precio:", libro[6])
+                fecha_ultimo_precio = str(libro[6])
+                dia_ultimo_precio = fecha_ultimo_precio[:2]
+                mes_ultimo_precio = fecha_ultimo_precio[2:4]
+                anio_ultimo_precio = fecha_ultimo_precio[4:]
+                fecha_ultimo_precio_formateada = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"
+        
+                print("Fecha último precio:", fecha_ultimo_precio_formateada)   
                 print("Cantidad disponible:", libro[7])
 
                 confirmacion = input("¿Desea modificar el precio? (s/n): ")
@@ -211,7 +218,13 @@ class ProgramaPrincipal():
                 print("Autor:", libro[3])
                 print("Género:", libro[4])
                 print("Precio:", libro[5])
-                print("Fecha último precio:", libro[6])
+                fecha_ultimo_precio = str(libro[6])
+                dia_ultimo_precio = fecha_ultimo_precio[:2]
+                mes_ultimo_precio = fecha_ultimo_precio[2:4]
+                anio_ultimo_precio = fecha_ultimo_precio[4:]
+                fecha_ultimo_precio_formateada = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"
+        
+                print("Fecha último precio:", fecha_ultimo_precio_formateada)   
                 print("Cantidad disponible:", libro[7])
 
                 confirmacion = input("¿Desea borrar el libro? (s/n): ")
@@ -248,7 +261,13 @@ class ProgramaPrincipal():
                 print("Autor:", libro[3])
                 print("Género:", libro[4])
                 print("Precio:", libro[5])
-                print("Fecha último precio:", libro[6])
+                fecha_ultimo_precio = str(libro[6])
+                dia_ultimo_precio = fecha_ultimo_precio[:2]
+                mes_ultimo_precio = fecha_ultimo_precio[2:4]
+                anio_ultimo_precio = fecha_ultimo_precio[4:]
+                fecha_ultimo_precio_formateada = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"
+        
+                print("Fecha último precio:", fecha_ultimo_precio_formateada)                
                 print("Cantidad disponible:", libro[7])
 
                 confirmacion = input("¿Desea incrementar la cantidad disponible? (s/n): ")
@@ -280,7 +299,13 @@ class ProgramaPrincipal():
                     print("Autor:", libro[3])
                     print("Género:", libro[4])
                     print("Precio:", libro[5])
-                    print("Fecha último precio:", libro[6])
+                    fecha_ultimo_precio = str(libro[6])
+                    dia_ultimo_precio = fecha_ultimo_precio[:2]
+                    mes_ultimo_precio = fecha_ultimo_precio[2:4]
+                    anio_ultimo_precio = fecha_ultimo_precio[4:]
+                    fecha_ultimo_precio_formateada = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"
+        
+                    print("Fecha último precio:", fecha_ultimo_precio_formateada)
                     print("Cantidad disponible:", libro[7])
                     print("------------------------")
             else:
@@ -376,7 +401,12 @@ class ProgramaPrincipal():
                     print("Autor:", registro[3])
                     print("Género:", registro[4])
                     print("Precio:", registro[5])
-                    print("Fecha último precio:", registro[6])
+                    fecha_ultimo_precio = str(registro[6])
+                    dia_ultimo_precio = fecha_ultimo_precio[:2]
+                    mes_ultimo_precio = fecha_ultimo_precio[2:4]
+                    anio_ultimo_precio = fecha_ultimo_precio[4:]
+                    fecha_ultimo_precio_formateada = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"        
+                    print("Fecha último precio:", fecha_ultimo_precio_formateada)   
                     print("Cantidad disponible:", registro[7])
                     print("------------------------")
             else:
