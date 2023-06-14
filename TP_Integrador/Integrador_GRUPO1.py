@@ -5,7 +5,7 @@ from datetime import date
 
 today = date.today()
 today = today.strftime("%d/%m/%Y")
-#print(today)
+print(today)
 
 class ProgramaPrincipal():
 
@@ -433,12 +433,7 @@ class ProgramaPrincipal():
                     print("Autor:", registro[3])
                     print("Género:", registro[4])
                     print("Precio:", registro[5])
-                    fecha_ultimo_precio = str(registro[6])
-                    dia_ultimo_precio = fecha_ultimo_precio[:2]
-                    mes_ultimo_precio = fecha_ultimo_precio[2:4]
-                    anio_ultimo_precio = fecha_ultimo_precio[4:]
-                    fecha_ultimo_precio_formateada = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"        
-                    print("Fecha último precio:", fecha_ultimo_precio_formateada)   
+                    print("Fecha último precio:", registro[6])
                     print("Cantidad disponible:", registro[7])
                     print("------------------------")
             else:
