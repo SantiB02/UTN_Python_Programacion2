@@ -5,7 +5,7 @@ from datetime import date
 
 today = date.today()
 today = today.strftime("%d/%m/%Y")
-print(today)
+#print(today)
 
 class ProgramaPrincipal():
 
@@ -416,6 +416,8 @@ class ProgramaPrincipal():
             anio_limite = str(anio_limite)
 
             fecha_limite = f"{dia_limite}/{mes_limite}/{anio_limite}"
+
+            #Acá hay que convertir las fechas a comparar a objeto datetime. Sino no se pueden comparar
 
             conexion = Conexiones()
             conexion.abrir_conexion()
