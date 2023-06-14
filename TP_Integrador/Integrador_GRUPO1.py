@@ -4,7 +4,7 @@ import datetime
 from datetime import date
 
 today = date.today()
-today = today.strftime("%d/%m/%Y")
+today = today.strftime("%Y-%m-%d")
 print(today)
 
 class ProgramaPrincipal():
@@ -26,9 +26,9 @@ class ProgramaPrincipal():
             print("3- Borrar un libro")
             print("4- Cargar disponibilidad")
             print("5- Listado de libros")
-            print("6- Ventas") #ivo
-            print("7- Actualizar Precios") #santi
-            print("8- Registros anteriores a una fecha") #leo
+            print("6- Ventas")
+            print("7- Actualizar Precios")
+            print("8- Registros anteriores a una fecha")
             print("0- Salir del menú")
             respuesta = int(input("Ingrese una opción del menú: "))
             if respuesta == 1:
@@ -158,7 +158,7 @@ class ProgramaPrincipal():
 
                 anio_ultimo_precio = str(anio_ultimo_precio)
 
-            fecha_ultimo_precio = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"
+            fecha_ultimo_precio = f"{anio_ultimo_precio}-{mes_ultimo_precio}-{dia_ultimo_precio}"
 
             cant_disponible = int(input("Ingrese la cantidad disponible del libro: "))
 
@@ -376,6 +376,10 @@ class ProgramaPrincipal():
                 confirmacion = input("¿Desea actualizar los precios? (s/n): ")
                 if confirmacion.lower() == "s":
                     for libro in libros:
+                        conexion.mi_cursor.execute("""
+                            INSERT INTO historico_libros (ISBN, Titulo, Autor, Genero, Precio, FechaUltimoPrecio, CantDisponible)
+                            VALUES (?, ?, ?, ?, ?, ?, ?)
+                            """, (libro[1], libro[2], libro[3], libro[4], libro[5], libro[6], libro[7]))
                         nuevo_precio = libro[5] + libro[5] * porcentaje_aumento / 100
                         conexion.mi_cursor.execute("UPDATE Libros SET Precio = ?, FechaUltimoPrecio = ? WHERE ID = ?", (nuevo_precio, today, libro[0]))
                     conexion.mi_conexion.commit()
@@ -415,7 +419,7 @@ class ProgramaPrincipal():
 
             anio_limite = str(anio_limite)
 
-            fecha_limite = f"{dia_limite}/{mes_limite}/{anio_limite}"
+            fecha_limite = f"{anio_limite}-{mes_limite}-{dia_limite}"
 
             #Acá hay que convertir las fechas a comparar a objeto datetime. Sino no se pueden comparar
 
