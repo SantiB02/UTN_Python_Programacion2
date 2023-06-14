@@ -4,9 +4,19 @@ import datetime
 from datetime import date
 
 today = date.today()
-today = today.strftime("%d%m%Y")
+today = today.strftime("%d/%m/%Y")
+print(today)
 
 class ProgramaPrincipal():
+
+    def estandarizar_fecha(self, fecha: int) -> str: #Si el día es menor a 10 lo estandarizo, sino lo devuelvo sin modificar
+        fecha = str(fecha)
+        if len(fecha) == 1:
+            fecha = '0' + fecha
+            return fecha
+        else:
+            return fecha
+
     def menu(self):
         repite = 1
         while repite != 0:
@@ -62,7 +72,7 @@ class ProgramaPrincipal():
                     Autor TEXT,
                     Genero TEXT,
                     Precio REAL,
-                    FechaUltimoPrecio INTEGER,
+                    FechaUltimoPrecio TEXT,
                     CantDisponible INTEGER
                 )
             """)
@@ -72,7 +82,7 @@ class ProgramaPrincipal():
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
                     LibroID INTEGER,
                     Cantidad INTEGER,
-                    FechaVenta INTEGER,
+                    FechaVenta TEXT,
                     FOREIGN KEY (LibroID) REFERENCES Libros(ID)
                 )
             """)
@@ -85,7 +95,7 @@ class ProgramaPrincipal():
                     Autor TEXT,
                     Genero TEXT,
                     Precio REAL,
-                    FechaUltimoPrecio INTEGER,
+                    FechaUltimoPrecio TEXT,
                     CantDisponible INTEGER
                 )
             """)
@@ -97,7 +107,7 @@ class ProgramaPrincipal():
             conexion.cerrar_conexion()
 
 
-    def cargar_libros(self):
+    def cargar_libros(self): #opcion 1
         try:
             isbn = int(input("Ingrese el ISBN del libro: "))
             while len(str(isbn)) != 10 or not isinstance(isbn, int):
@@ -126,16 +136,19 @@ class ProgramaPrincipal():
 
             dia_ultimo_precio = int(input("Ingrese el día del último precio (DD): "))
 
-
             while not isinstance(dia_ultimo_precio, int) or dia_ultimo_precio < 1 or dia_ultimo_precio > 31:
                 print("ERROR! Ingrese un dia correcto")
                 dia_ultimo_precio = int(input("Ingrese el dia del último precio (DD): "))
 
+            dia_ultimo_precio = self.estandarizar_fecha(dia_ultimo_precio)
+
             mes_ultimo_precio = int(input("Ingrese el mes del último precio (MM): "))
 
-            while len(str(mes_ultimo_precio)) != 2 or not isinstance(mes_ultimo_precio, int) or mes_ultimo_precio < 1 or mes_ultimo_precio > 12:
+            while not isinstance(mes_ultimo_precio, int) or mes_ultimo_precio < 1 or mes_ultimo_precio > 12:
                 print("ERROR! Ingrese un mes correcto")
                 mes_ultimo_precio = int(input("Ingrese el mes del último precio (MM): "))
+
+            mes_ultimo_precio = self.estandarizar_fecha(mes_ultimo_precio)
 
             anio_ultimo_precio = int(input("Ingrese el año del último precio (AAAA): "))
 
@@ -143,14 +156,16 @@ class ProgramaPrincipal():
                 print("ERROR! Ingrese un año correcto")
                 anio_ultimo_precio = int(input("Ingrese el año del último precio (AAAA): "))
 
+                anio_ultimo_precio = str(anio_ultimo_precio)
+
+            fecha_ultimo_precio = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"
+
             cant_disponible = int(input("Ingrese la cantidad disponible del libro: "))
 
             while cant_disponible < 1 or not isinstance(cant_disponible, int): #validacion
                 print("ERROR! La cantidad debe ser mayor a 0")
                 cant_disponible = int(input("Ingrese la cantidad disponible del libro: "))
 
-            fecha_ultimo_precio = str(dia_ultimo_precio) + str(mes_ultimo_precio) + str(anio_ultimo_precio)
-            fecha_ultimo_precio = int(fecha_ultimo_precio)
 
             conexion = Conexiones()
             conexion.abrir_conexion()
@@ -166,7 +181,7 @@ class ProgramaPrincipal():
             conexion.cerrar_conexion()
 
     
-    def modificar_precio_libro(self):
+    def modificar_precio_libro(self): #opcion 2
         try:
             libro_id = int(input("Ingrese el ID del libro a modificar: "))
             nuevo_precio = float(input("Ingrese el nuevo precio del libro: "))
@@ -183,13 +198,7 @@ class ProgramaPrincipal():
                 print("Autor:", libro[3])
                 print("Género:", libro[4])
                 print("Precio:", libro[5])
-                fecha_ultimo_precio = str(libro[6])
-                dia_ultimo_precio = fecha_ultimo_precio[:2]
-                mes_ultimo_precio = fecha_ultimo_precio[2:4]
-                anio_ultimo_precio = fecha_ultimo_precio[4:]
-                fecha_ultimo_precio_formateada = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"
-        
-                print("Fecha último precio:", fecha_ultimo_precio_formateada)   
+                print("Fecha último precio:", libro[6])
                 print("Cantidad disponible:", libro[7])
 
                 confirmacion = input("¿Desea modificar el precio? (s/n): ")
@@ -206,7 +215,7 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()
             
-    def borrar_libro(self):
+    def borrar_libro(self): #opcion 3
         try:
             libro_id = int(input("Ingrese el ID del libro a borrar: "))
 
@@ -222,13 +231,7 @@ class ProgramaPrincipal():
                 print("Autor:", libro[3])
                 print("Género:", libro[4])
                 print("Precio:", libro[5])
-                fecha_ultimo_precio = str(libro[6])
-                dia_ultimo_precio = fecha_ultimo_precio[:2]
-                mes_ultimo_precio = fecha_ultimo_precio[2:4]
-                anio_ultimo_precio = fecha_ultimo_precio[4:]
-                fecha_ultimo_precio_formateada = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"
-        
-                print("Fecha último precio:", fecha_ultimo_precio_formateada)   
+                print("Fecha último precio:", libro[6])
                 print("Cantidad disponible:", libro[7])
 
                 confirmacion = input("¿Desea borrar el libro? (s/n): ")
@@ -245,7 +248,7 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()        
 
-    def cargar_disponibilidad(self):
+    def cargar_disponibilidad(self): #opcion 4
         try:
             libro_id = int(input("Ingrese el ID del libro: "))
             incremento_cant = int(input("Ingrese el incremento de cantidad disponible: "))
@@ -265,13 +268,7 @@ class ProgramaPrincipal():
                 print("Autor:", libro[3])
                 print("Género:", libro[4])
                 print("Precio:", libro[5])
-                fecha_ultimo_precio = str(libro[6])
-                dia_ultimo_precio = fecha_ultimo_precio[:2]
-                mes_ultimo_precio = fecha_ultimo_precio[2:4]
-                anio_ultimo_precio = fecha_ultimo_precio[4:]
-                fecha_ultimo_precio_formateada = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"
-        
-                print("Fecha último precio:", fecha_ultimo_precio_formateada)                
+                print("Fecha último precio:", libro[6])
                 print("Cantidad disponible:", libro[7])
 
                 confirmacion = input("¿Desea incrementar la cantidad disponible? (s/n): ")
@@ -289,7 +286,7 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()
 
-    def mostrar_libros(self, orden: str):
+    def mostrar_libros(self, orden: str): #opcion 5
         try:
             conexion = Conexiones()
             conexion.abrir_conexion()
@@ -303,13 +300,7 @@ class ProgramaPrincipal():
                     print("Autor:", libro[3])
                     print("Género:", libro[4])
                     print("Precio:", libro[5])
-                    fecha_ultimo_precio = str(libro[6])
-                    dia_ultimo_precio = fecha_ultimo_precio[:2]
-                    mes_ultimo_precio = fecha_ultimo_precio[2:4]
-                    anio_ultimo_precio = fecha_ultimo_precio[4:]
-                    fecha_ultimo_precio_formateada = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"
-        
-                    print("Fecha último precio:", fecha_ultimo_precio_formateada)
+                    print("Fecha último precio:", libro[6])
                     print("Cantidad disponible:", libro[7])
                     print("------------------------")
             else:
@@ -319,11 +310,12 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()
 
-    def realizar_venta(self):
+    def realizar_venta(self): #opcion 6
         try:
             libro_id = int(input("Ingrese el ID del libro vendido: "))
             cantidad = int(input("Ingrese la cantidad vendida: "))
-            fecha_venta = input("Ingrese la fecha de la venta (YYYY-MM-DD): ")
+            
+            fecha_venta = today #La fecha de venta es la fecha de hoy, cuando se realiza esta venta
 
             conexion = Conexiones()
             conexion.abrir_conexion()
@@ -331,6 +323,16 @@ class ProgramaPrincipal():
 
             if libro:
                 if cantidad <= libro[7]:
+                    print("Información del libro vendido:")
+                    print("ID:", libro[0])
+                    print("ISBN:", libro[1])
+                    print("Título:", libro[2])
+                    print("Autor:", libro[3])
+                    print("Género:", libro[4])
+                    print("Precio:", libro[5])
+                    print("Fecha último precio:", libro[6])
+                    print("Cantidad disponible:", libro[7])
+
                     confirmacion = input("¿Desea registrar la venta? (s/n): ")
                     if confirmacion.lower() == "s":
                         nueva_cant = libro[7] - cantidad
@@ -350,7 +352,7 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()
 
-    def actualizar_precios(self):
+    def actualizar_precios(self): #opcion 7
         try:
             porcentaje_aumento = float(input("Ingrese el porcentaje de aumento de precios: "))
 
@@ -367,12 +369,7 @@ class ProgramaPrincipal():
                     print("Autor:", libro[3])
                     print("Género:", libro[4])
                     print("Precio:", libro[5])
-                    fecha_ultimo_precio = str(libro[6])
-                    dia_ultimo_precio = fecha_ultimo_precio[:2]
-                    mes_ultimo_precio = fecha_ultimo_precio[2:4]
-                    anio_ultimo_precio = fecha_ultimo_precio[4:]
-                    fecha_ultimo_precio_formateada = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"
-                    print("Fecha último precio:", fecha_ultimo_precio_formateada)
+                    print("Fecha último precio:", libro[6])
                     print("Cantidad disponible:", libro[7])
                     print("------------------------")
 
@@ -392,29 +389,33 @@ class ProgramaPrincipal():
         finally:
             conexion.cerrar_conexion()
 
-    #ACÁ VA MOSTRAR_REGISTROS_ANTERIORES(SELF)
-    def mostrar_registros_anteriores(self):
+    def mostrar_registros_anteriores(self): #opcion 8
         try:
-            dia_limite = int(input("Ingrese el día del último precio (DD): "))
+            dia_limite = int(input("Ingrese el día de la fecha limite de busqueda (DD): "))
 
             while not isinstance(dia_limite, int) or dia_limite < 1 or dia_limite > 31:
                 print("ERROR! Ingrese un dia correcto")
-                dia_ultimo_precio = int(input("Ingrese el dia del último precio (DD): "))
+                dia_ultimo_precio = int(input("Ingrese el dia de la fecha limite de busqueda (DD): "))
 
-            mes_limite = int(input("Ingrese el mes del último precio (MM): "))
+            dia_limite = self.estandarizar_fecha(dia_limite)
 
-            while len(str(mes_limite)) != 2 or not isinstance(mes_limite, int) or mes_limite < 1 or mes_limite > 12:
+            mes_limite = int(input("Ingrese el mes de la fecha limite de busqueda (MM): "))
+
+            while not isinstance(mes_limite, int) or mes_limite < 1 or mes_limite > 12:
                 print("ERROR! Ingrese un mes correcto")
-                mes_limite = int(input("Ingrese el mes del último precio (MM): "))
+                mes_limite = int(input("Ingrese el mes de la fecha limite de busqueda (MM): "))
 
-            anio_limite = int(input("Ingrese el año del último precio (AAAA): "))
+            mes_limite = self.estandarizar_fecha(mes_limite)
+
+            anio_limite = int(input("Ingrese el año de la fecha limite de busqueda (AAAA): "))
 
             while len(str(anio_limite)) != 4 or not isinstance(anio_limite, int):
                 print("ERROR! Ingrese un año correcto")
-                anio_limite = int(input("Ingrese el año del último precio (AAAA): "))
-            fecha_limite = str(dia_limite) + str(mes_limite) + str(anio_limite)
-            fecha_ultimo_precio = int(fecha_ultimo_precio)
+                anio_limite = int(input("Ingrese el año de la fecha limite de busqueda (AAAA): "))
 
+            anio_limite = str(anio_limite)
+
+            fecha_limite = f"{dia_limite}/{mes_limite}/{anio_limite}"
 
             conexion = Conexiones()
             conexion.abrir_conexion()
