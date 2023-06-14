@@ -1,6 +1,10 @@
 import sqlite3
 import math
 import datetime
+from datetime import date
+
+today = date.today()
+today = today.strftime("%d%m%Y")
 
 class ProgramaPrincipal():
     def menu(self):
@@ -41,7 +45,7 @@ class ProgramaPrincipal():
             if respuesta == 7:
                 self.actualizar_precios() #REVISAR FECHA_ACTUAL (NO ESTÁ PEDIDA AL USUARIO)
             if respuesta == 8:
-                self.registros_anteriores()
+                self.mostrar_registros_anteriores()
             if respuesta == 0:
                 repite = 0
 
@@ -123,7 +127,7 @@ class ProgramaPrincipal():
             dia_ultimo_precio = int(input("Ingrese el día del último precio (DD): "))
 
 
-            while len(str(dia_ultimo_precio)) != 2 or not isinstance(dia_ultimo_precio, int) or dia_ultimo_precio < 1 or dia_ultimo_precio > 31:
+            while not isinstance(dia_ultimo_precio, int) or dia_ultimo_precio < 1 or dia_ultimo_precio > 31:
                 print("ERROR! Ingrese un dia correcto")
                 dia_ultimo_precio = int(input("Ingrese el dia del último precio (DD): "))
 
@@ -363,7 +367,12 @@ class ProgramaPrincipal():
                     print("Autor:", libro[3])
                     print("Género:", libro[4])
                     print("Precio:", libro[5])
-                    print("Fecha último precio:", libro[6])
+                    fecha_ultimo_precio = str(libro[6])
+                    dia_ultimo_precio = fecha_ultimo_precio[:2]
+                    mes_ultimo_precio = fecha_ultimo_precio[2:4]
+                    anio_ultimo_precio = fecha_ultimo_precio[4:]
+                    fecha_ultimo_precio_formateada = f"{dia_ultimo_precio}/{mes_ultimo_precio}/{anio_ultimo_precio}"
+                    print("Fecha último precio:", fecha_ultimo_precio_formateada)
                     print("Cantidad disponible:", libro[7])
                     print("------------------------")
 
@@ -371,7 +380,7 @@ class ProgramaPrincipal():
                 if confirmacion.lower() == "s":
                     for libro in libros:
                         nuevo_precio = libro[5] + libro[5] * porcentaje_aumento / 100
-                        conexion.mi_cursor.execute("UPDATE Libros SET Precio = ?, FechaUltimoPrecio = ? WHERE ID = ?", (nuevo_precio, fecha_actual, libro[0]))
+                        conexion.mi_cursor.execute("UPDATE Libros SET Precio = ?, FechaUltimoPrecio = ? WHERE ID = ?", (nuevo_precio, today, libro[0]))
                     conexion.mi_conexion.commit()
                     print("Precios actualizados exitosamente.")
                 else:
@@ -386,11 +395,31 @@ class ProgramaPrincipal():
     #ACÁ VA MOSTRAR_REGISTROS_ANTERIORES(SELF)
     def mostrar_registros_anteriores(self):
         try:
-            fecha_limite = input("Ingrese la fecha límite (YYYY-MM-DD): ")
+            dia_limite = int(input("Ingrese el día del último precio (DD): "))
+
+            while not isinstance(dia_limite, int) or dia_limite < 1 or dia_limite > 31:
+                print("ERROR! Ingrese un dia correcto")
+                dia_ultimo_precio = int(input("Ingrese el dia del último precio (DD): "))
+
+            mes_limite = int(input("Ingrese el mes del último precio (MM): "))
+
+            while len(str(mes_limite)) != 2 or not isinstance(mes_limite, int) or mes_limite < 1 or mes_limite > 12:
+                print("ERROR! Ingrese un mes correcto")
+                mes_limite = int(input("Ingrese el mes del último precio (MM): "))
+
+            anio_limite = int(input("Ingrese el año del último precio (AAAA): "))
+
+            while len(str(anio_limite)) != 4 or not isinstance(anio_limite, int):
+                print("ERROR! Ingrese un año correcto")
+                anio_limite = int(input("Ingrese el año del último precio (AAAA): "))
+            fecha_limite = str(dia_limite) + str(mes_limite) + str(anio_limite)
+            fecha_ultimo_precio = int(fecha_ultimo_precio)
+
 
             conexion = Conexiones()
             conexion.abrir_conexion()
             registros = conexion.mi_cursor.execute("SELECT * FROM Libros WHERE FechaUltimoPrecio < ?", (fecha_limite,)).fetchall()
+            
 
             if registros:
                 print("Registros anteriores a la fecha límite:")
