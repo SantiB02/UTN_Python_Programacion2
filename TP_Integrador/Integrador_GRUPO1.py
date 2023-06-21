@@ -398,7 +398,7 @@ class ProgramaPrincipal():
 
             while not isinstance(dia_limite, int) or dia_limite < 1 or dia_limite > 31:
                 print("ERROR! Ingrese un dia correcto")
-                dia_ultimo_precio = int(input("Ingrese el dia de la fecha limite de busqueda (DD): "))
+                dia_limite = int(input("Ingrese el dia de la fecha limite de busqueda (DD): "))
 
             dia_limite = self.estandarizar_fecha(dia_limite)
 
@@ -419,8 +419,6 @@ class ProgramaPrincipal():
             anio_limite = str(anio_limite)
 
             fecha_limite = f"{anio_limite}-{mes_limite}-{dia_limite}"
-
-            #Acá hay que convertir las fechas a comparar a objeto datetime. Sino no se pueden comparar
 
             conexion = Conexiones()
             conexion.abrir_conexion()
