@@ -5,7 +5,6 @@ from datetime import date
 
 today = date.today()
 today = today.strftime("%Y-%m-%d")
-print(today)
 
 class ProgramaPrincipal():
 
