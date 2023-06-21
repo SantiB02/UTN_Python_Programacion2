@@ -8,7 +8,7 @@ today = today.strftime("%Y-%m-%d")
 
 class ProgramaPrincipal():
 
-    def estandarizar_fecha(self, fecha: int) -> str: #Si el día es menor a 10 lo estandarizo, sino lo devuelvo sin modificar
+    def estandarizar_fecha(self, fecha): #Si el día es menor a 10 lo estandarizo, sino lo devuelvo sin modificar
         fecha = str(fecha)
         if len(fecha) == 1:
             fecha = '0' + fecha
